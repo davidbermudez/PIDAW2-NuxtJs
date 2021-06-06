@@ -41,11 +41,11 @@
       <div class="column">        
         <b-carousel :indicator-inside="false">
           <b-carousel-item v-for="(item, i) in items" :key="i">
-              <b-image class="image" :src="item.img"></b-image>
-          </b-carousel-item>
-          <template #indicators="item">
-              <b-image class="al image" :src="item.prop" :title="item.text"></b-image>
-          </template>
+            <div class="has-text-centered">
+              <b-image class="image" :src="item.img" :alt="item.attribution"></b-image>
+              <h1 class="title">{{ item.text }}</h1>
+            </div>                            
+          </b-carousel-item>          
         </b-carousel>  
       </div>
     </div>
@@ -64,11 +64,11 @@ export default {
     return {
       searchText: '',
       items: [
-        { text: 'Slide 1', img:'/static/img/001.jpg', prop: '/assets/img/001-copia.jpg'},
-        { text: 'Slide 2', img:'/static/img/002.jpg', prop: '/assets/img/002-copia.jpg'},
-        { text: 'Slide 3', img:'/static/img/003.jpg', prop: '/assets/img/003-copia.jpg'},
-        { text: 'Slide 4', img:'/assets/img/004.jpg', prop: '/assets/img/004-copia.jpg', attribution: 'Imagen de <a href="https://pixabay.com/es/users/carmen_carbonell-3615516/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=2816353">Carmen Carbonell</a> en <a href="https://pixabay.com/es/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=2816353">Pixabay</a>' },
-        { text: 'Slide 5', img:'/assets/img/005.jpg', prop: '/assets/img/005-copia.jpg', attribution: '<a href="https://www.freepik.com/photos/hand">Hand photo created by wavebreakmedia_micro - www.freepik.com</a>' }
+        { text: 'Slide 1', img:'/img/001.jpg', prop: '/img/001-copia.jpg'},
+        { text: 'Slide 2', img:'/img/002.jpg', prop: '/img/002-copia.jpg'},
+        { text: 'Slide 3', img:'/img/003.jpg', prop: '/img/003-copia.jpg'},
+        { text: 'Slide 4', img:'/img/004.jpg', prop: '/img/004-copia.jpg', attribution: 'Imagen de <a href="https://pixabay.com/es/users/carmen_carbonell-3615516/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=2816353">Carmen Carbonell</a> en <a href="https://pixabay.com/es/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=2816353">Pixabay</a>' },
+        { text: 'Slide 5', img:'/img/005.jpg', prop: '/img/005-copia.jpg', attribution: '<a href="https://www.freepik.com/photos/hand">Hand photo created by wavebreakmedia_micro - www.freepik.com</a>' }
       ]
     };
   },
@@ -116,5 +116,10 @@ export default {
 }
 .al img {
     filter: grayscale(100%);
+}
+.title {
+  color:azure;
+  transform: translateY(-250px);
+  text-shadow: black 0.1em 0.1em;
 }
 </style>
