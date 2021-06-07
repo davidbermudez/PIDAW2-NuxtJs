@@ -23,9 +23,9 @@
         <div class="navbar-end" v-if="!user_uid">
           <div class="navbar-item">
             <div class="buttons">
-              <a class="button">
+              <NuxtLink class="button" to="/register">
                 <strong>Registro</strong>
-              </a>
+              </NuxtLink>
               <a class="button is-light" @click="isLoginActive=true">
                 Acceder
               </a>
@@ -95,6 +95,13 @@
               </b-input>
             </b-field>
         </section>
+        <section class="modal-card-body">
+          <nuxt-link
+            to="/register"
+            @click="isLoginActive=false"
+          >Nunca he accedido/Olvidé mi contraseña
+          </nuxt-link>
+        </section>
         <footer class="modal-card-foot">
           <button class="button is-primary">Acceder</button>
         </footer>
@@ -111,7 +118,10 @@ export default {
       isLoginActive: false,
       loginEmail: '',
       loginPassword: '',
+      recoverEmail: '',
       isActive: false,
+      newPass1: '',
+      newPass2: '',      
       items: [
         {
           title: 'Organizaciones',
@@ -121,7 +131,7 @@ export default {
         {
           title: 'Votaciones',
           icon: 'star',
-          to: { name: 'favoritas' }
+          to: { name: 'votaciones' }
         }
       ]
     }
@@ -166,6 +176,11 @@ export default {
     logout() {
       this.$store.commit('saveToken', null)
       this.$store.commit('saveUser', null)
+      this.$router.push('/')
+    },
+    register() {
+      // hide modal
+          this.isLoginActive = false
     }
   }
 }

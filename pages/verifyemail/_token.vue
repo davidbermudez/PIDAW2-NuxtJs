@@ -1,0 +1,37 @@
+<template>
+  <section class="section">    
+    {{ response.error }}    
+  </section>
+</template>
+
+<script>
+export default {
+  asyncData ({ params, $axios, store, redirect }) {
+    const token = params.token
+    console.log(token)
+    return $axios.post('/verifyemail/', {
+      'token': token,
+    })
+    .then((res) => {
+      if (res.data.result=='0'){
+        return {
+          'response': res.data,
+        }
+      }
+      if (res.data.result=='10'){
+        store.commit('saveToken', res.data.token)
+        store.commit('saveUser', res.data.uid)
+        redirect("/newpass")
+      }
+    })
+  },
+  computed: {
+    user_uid: function () {
+      return this.$store.state.user_uid;
+    },
+    token: function () {
+      return this.$store.state.token;
+    }
+  }
+}
+</script>
