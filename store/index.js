@@ -3,6 +3,8 @@ export const state = () => ({
   user_uid: null,
   user_name: null,
   user_email: null,
+  current_assembly: null,
+  current_presentation: null,
 })
 
 export const mutations = {
@@ -17,5 +19,11 @@ export const mutations = {
   },
   saveEmail(state, user_email){
     state.user_email = user_email;
+  },
+  saveAssembly(state, current_assembly){
+    state.current_assembly = current_assembly;
+  },
+  savePresentation(state, current_presentation){
+    state.current_presentation = current_presentation;
   }
 }

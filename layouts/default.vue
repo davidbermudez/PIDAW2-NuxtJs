@@ -8,7 +8,7 @@
       <div class="navbar-brand">
         <a
           class="navbar-item"
-          href="/"
+          @click="toIndex"          
         >Assembly-voting  <div class="separator"><b-icon icon="chart-box" size="is-medium"/></div>
         </a>
 
@@ -96,11 +96,9 @@
             </b-field>
         </section>
         <section class="modal-card-body">
-          <nuxt-link
-            to="/register"
-            @click="isLoginActive=false"
-          >Nunca he accedido/Olvidé mi contraseña
-          </nuxt-link>
+          <a @click="register">
+                <strong>Nunca he accedido/He olvidado mi contraseña</strong>
+              </a>
         </section>
         <footer class="modal-card-foot">
           <button class="button is-primary">Acceder</button>
@@ -124,14 +122,14 @@ export default {
       newPass2: '',      
       items: [
         {
-          title: 'Organizaciones',
+          title: 'Tus votaciones',
           icon: 'home',
           to: { name: 'index' }
         },
         {
-          title: 'Votaciones',
+          title: 'Perfil',
           icon: 'star',
-          to: { name: 'votaciones' }
+          to: { name: 'profile' }
         }
       ]
     }
@@ -142,6 +140,12 @@ export default {
     },
     token: function () {
       return this.$store.state.token;
+    },
+    user_email: function () {
+      return this.$store.state.user_email;
+    },
+    user_name: function () {
+      return this.$store.state.user_name;
     }
   },
   methods: {
@@ -155,7 +159,8 @@ export default {
           console.log(res.data.message)
           this.$store.commit('saveToken', res.data.token)
           this.$store.commit('saveUser', res.data.uid)
-          // restore input fields
+          this.getUser(res.data.token, res.data.uid)
+          // restore input field
           this.loginEmail = ''
           this.loginPassword = ''
           // hide modal
@@ -171,7 +176,8 @@ export default {
       })
       .catch((err) => {
         console.log(err);
-      })      
+      }),
+      this.$router.push('/')
     },
     logout() {
       this.$store.commit('saveToken', null)
@@ -180,7 +186,29 @@ export default {
     },
     register() {
       // hide modal
-          this.isLoginActive = false
+      this.isLoginActive = false
+      this.$router.push('/register')
+    },
+    getUser(token, uid){
+      const peticion1 = this.$axios.post('/voter/', {
+        'uid': uid,
+        'token': token
+      })
+      .then((res) => {
+        if(res.data.result=='10'){
+          this.$store.commit('saveName', res.data.user_name)          
+          this.$store.commit('saveEmail', res.data.user_email)
+        }
+        if(res.data.result=='0'){
+          alert(error)
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    },
+    toIndex(){
+      this.$router.push('/')
     }
   }
 }

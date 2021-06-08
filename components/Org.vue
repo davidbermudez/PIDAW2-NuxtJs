@@ -3,17 +3,18 @@
              is-one-third-desktop is-one-quarter-widescreen">
    <div class="card">
      <header class="card-header">
-       <p class="card-header-title">{{ org.name }}</p>
+       <p class="card-header-title">{{ asamblea.organization_name }}</p>
      </header>
-     <div class="card-image" @click="isModalActive=true">
+     <div class="card-image" @click="open(asamblea.assembly_id)">
+       
        <figure class="image">
-         <img :src="photo">
+         <img src="/img/icon.png">
        </figure>
+       
      </div>
-     <footer class="card-footer">
-       <a class="button is-light card-footer-item">
-         <span>{{ org.description }}</span>
-         <b-icon icon="star"></b-icon>
+     <footer class="card-footer" style="max-width:200px">
+       <a class="is-light card-footer-item">
+         <span>{{ asamblea.assembly_label }}</span>         
        </a>
      </footer>
      <!-- modal -->
@@ -21,10 +22,10 @@
       <div class="card">
         <div class="card-content">
           <h2 class="title">
-            {{ org.name }}
-            <small>({{ org.id }})</small>
+            {{ asamblea.assembly_label }}
+            <small>({{ asamblea.assembly_id }})</small>
           </h2>
-          <p>{{org.name}}</p>
+          <p>{{asamblea.assembly_label}}</p>
         </div>
       </div>
       </b-modal>
@@ -39,12 +40,8 @@ export default {
       isModalActive: false,
     };
   },  
-  props: {
-    photo: {
-      type: String,
-      default: ''  
-    },
-    org: {
+  props: {    
+    asamblea: {
       type: Object
     },    
     title: {
@@ -54,6 +51,11 @@ export default {
     icon: {
       type: String,
       required: true
+    }    
+  },
+  methods: {
+    open(loquesea){
+      this.$router.push('/assembly/' + loquesea)
     }
   }
 }

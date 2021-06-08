@@ -64,6 +64,7 @@ export default {
           // restore input fields
           this.recoverEmail = ''
           alert(res.data.message)
+          this.$router.push('/')
         }
         if (res.data.result=='0'){
           const error = (res.data.error)          

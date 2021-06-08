@@ -8,19 +8,21 @@
           Participa en las votaciones a las que has sido convocado/a
         </h2>
       </section>      
-      <div class="columns is-multiline">
-        <Org
-          v-for="org in orgs"
-          :key="org.id"
-          :org="org"
-          title="org.name"
-          icon="home"
-          :photo="'https://localhost:8000' + org.photo"
-        >
-          Open source on <a href="https://github.com/buefy/buefy">
-            GitHub
-          </a>
-        </Org>
+      <div class="columns is-multiline">        
+        <template>
+          <section class="section">
+            <h2 class="title">Votaciones:</h2>
+            <div class="columns is-multiline">
+              <Org
+                v-for="asamblea in assembly"
+                :key="asamblea.assembly_id"
+                :asamblea="asamblea"
+                title="asamblea.label"
+                icon="home"
+              />
+            </div>
+          </section>
+        </template>
       </div>
     </div>
     <!-- not identifiqued -->
@@ -43,12 +45,12 @@
 import Org from '~/components/Org'
 
 export default {
+  assembly: [],
   components: {
     Org
   },
   data() {
-    return {
-      assembly: [],
+    return {      
       searchText: '',
       items: [
         { text: 'Rápido, fácil e intuitivo', img:'/img/001.jpg', prop: '/img/001-copia.jpg'},
@@ -58,53 +60,7 @@ export default {
         { text: 'Elecciones, Asambleas y Juntas', img:'/img/005.jpg', prop: '/img/005-copia.jpg', attribution: '<a href="https://www.freepik.com/photos/hand">Hand photo created by wavebreakmedia_micro - www.freepik.com</a>' }
       ]
     };
-  },
-  beforeCreate() {
-    if (this.$store.state.user_uid != null) {
-      const peticion1 = this.$axios.post('/voter/', {
-        'uid': this.$store.state.user_uid,
-        'token': this.$store.state.token
-      })
-      .then((res) => {
-        if(res.data.result=='10'){
-          this.$store.commit('saveName', res.data.user_name)          
-          this.$store.commit('saveEmail', res.data.user_email)
-        }
-        if(res.data.result=='0'){
-          alert(error)
-        }
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-      //
-      const peticion2 = this.$axios.post('/assembly/', {
-        'uid': this.$store.state.user_uid,
-        'token': this.$store.state.token
-      })
-      .then((res) => {
-        if(res.data.result=='10'){
-          this.$store.commit('saveName', res.data.user_name)
-          // user_name = res.data.user_name
-          // user_email = res.data.user_email
-          this.$store.commit('saveEmail', res.data.user_email)
-        }
-        if(res.data.result=='0'){
-          alert(error)
-        }
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-      //
-      const peticion3 = this.$axios.get('/organization/')
-      .then((res) => {
-        return {
-          'orgs': res.data,
-        }
-      })
-    }
-  },
+  },  
   computed: {
     user_uid: function () {
       return this.$store.state.user_uid;
@@ -119,25 +75,32 @@ export default {
       return this.$store.state.user_name;
     }
   },
-  methods: {
-    search () {
-      this.orgs = []
-      this.$el.querySelector('#searchInput').blur()  // esconder teclado móvil
-      return this.$axios.get('/organization/', {
-        params: {
-          'search': this.searchText,
-          'ordering': '-favoritos'
-        }
+  asyncData ({ store, $axios }) {
+    // cargamos las asambleas de este usuario
+    if (store.state.user_uid != null) {     
+      return $axios.post('/assembly/', {
+        'uid': store.state.user_uid,
+        'token': store.state.token
       })
       .then((res) => {
-        this.orgs = res.data
+        if(res.data.result=='10'){
+          console.log("asambleas: ", res.data.assembly)
+          return {
+            'assembly': res.data.assembly
+          }
+        }
+        if(res.data.result=='0'){
+          alert(error)
+        }
       })
-    },
-    clear () {
-      this.searchText = '';
-      this.search()
+      .catch((err) => {
+        console.log(err)
+      })
     }
-  }
+  }, 
+  mounted() {
+    // this.$nuxt.refresh()
+  }  
 }
 </script>
 

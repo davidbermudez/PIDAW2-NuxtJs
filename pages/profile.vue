@@ -5,3 +5,13 @@
     </h2>
   </section>
 </template>
+
+<script>
+export default {
+  fetch ({ store, redirect }) {
+    if (!store.state.user_uid) {
+      return redirect('/')
+    }
+  },
+}
+</script>

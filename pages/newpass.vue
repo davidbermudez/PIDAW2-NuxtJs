@@ -3,13 +3,13 @@
   <section class="hero is-warning is-small">
     <div class="hero-body">
       <p class="title">
-        Registro
+        Nueva Contraseña
       </p>      
       <p>
-        El administrador de una Asamblea es quien registra a los usuarios convocados para participar en ella
+        Su email ha sido verificado
       </p>
       <p>
-        Si crees que debes participar en una votación, o símplemente se te ha olvidado la contraseña de acceso, introduce tu correo electrónico aquí:
+        Ahora debe introducir una nueva contraseña
       </p>
     </div>
   </section>
@@ -17,7 +17,7 @@
     <form action="" v-on:submit.prevent="newPass">
       <div class="modal-card" style="width: auto">
         <header class="modal-card-head">
-          <p class="modal-card-title">Registro</p>
+          
         </header>
         <section class="modal-card-body">
           <b-field label="Contraseña">
