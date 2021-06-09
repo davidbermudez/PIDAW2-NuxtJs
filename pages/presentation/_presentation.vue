@@ -1,10 +1,10 @@
 <template>
   <div class="">
     <section class="section">
-      <h1 class="title">Bienvenido/a {{ user_name }}</h1>
-      <h2 class="subtitle">
-        Participa en las votaciones a las que has sido convocado/a
-      </h2>
+      <h1 class="title"><b-icon icon="account" />{{ user_name }}</h1>      
+    </section>
+    <section class="section">
+      <b-button type="is-success" @click="retour">Volver</b-button>
     </section>
     <section class="hero">
       <div class="hero-body">
@@ -56,9 +56,12 @@ export default {
     user_name: function () {
       return this.$store.state.user_name;
     },
+    current_assembly: function () {
+      return this.$store.state.current_assembly
+    },
     current_presentation: function () {
       return this.$store.state.current_presentation
-    }    
+    }
   },
   asyncData ({ params, store, $axios }) {
     const id_ponencia = params.presentation
@@ -70,7 +73,7 @@ export default {
     .then((res) => {
       if(res.data.result=='10'){        
         return {
-          'options': res.data.options,          
+          'options': res.data.options,
         }
       }
       if(res.data.result=='0'){
@@ -82,8 +85,7 @@ export default {
     })
   },
   methods: {
-    vote(option) {
-      console.log(option)
+    vote(option) {      
       let emitir_voto = this.$axios.post('/vote/', {
         'uid': this.$store.state.user_uid,
         'token': this.$store.state.token,
@@ -93,11 +95,15 @@ export default {
       .then((res) => {
         if(res.data.result=='10'){
           alert(res.data.message)
+          this.retour()
         }
       })
       .catch((err) => {
         console.log(err)
       })
+    },
+    retour() {
+      this.$router.push('/assembly/' + this.$store.state.current_assembly[0]['id'])
     }
   },
   mounted() {

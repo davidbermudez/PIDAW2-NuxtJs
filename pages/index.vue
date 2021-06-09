@@ -12,7 +12,7 @@
         <template>
           <section class="section">
             <h2 class="title">Votaciones:</h2>
-            <div class="columns is-multiline">
+            <div class="columns is-multiline" v-if="assembly">
               <Org
                 v-for="asamblea in assembly"
                 :key="asamblea.assembly_id"
@@ -27,17 +27,65 @@
     </div>
     <!-- not identifiqued -->
     <div class="columns" v-if="!user_uid">
-      <div class="column">        
-        <b-carousel :indicator-inside="false">
-          <b-carousel-item v-for="(item, i) in items" :key="i">
-            <div class="has-text-centered">
-              <b-image class="image" :src="item.img" :alt="item.attribution"></b-image>
-              <h1 class="title title-slide">{{ item.text }}</h1>
-            </div>                            
-          </b-carousel-item>          
-        </b-carousel>  
+      <div class="column">
+        <div class="card">
+          <div class="card-image">
+            <figure class="image is-by">
+              <img src="/img/001.jpg" alt="Placeholder image">
+            </figure>
+            <div class="has-text-centered mt-3 content">Rápido, fácil e intuitivo</div>
+          </div>
+        </div>        
       </div>
-    </div>    
+      <div class="column">
+        <div class="card">
+          <div class="card-image">
+            <figure class="image is-by">
+              <img src="/img/002.jpg" alt="Placeholder image">
+            </figure>
+            <div class="has-text-centered mt-3 content">Desde tu dispositivo móvil</div>
+          </div>
+        </div>              
+      </div>
+    </div>
+    <div class="columns" v-if="!user_uid">
+      <div class="column">
+        <div class="card">
+          <div class="card-image">
+            <figure class="image is-by">
+              <img src="/img/003.jpg" alt="Placeholder image">
+            </figure>
+            <div class="has-text-centered mt-3 content">Votos telemáticos y presenciales</div>
+          </div>
+        </div>                      
+      </div>    
+      <div class="column">
+        <div class="card">
+          <div class="card-image">
+            <figure class="image is-by">
+              <img src="/img/004.jpg" alt="Placeholder image">
+            </figure>
+            <div class="has-text-centered mt-3 content">Voto anónimo o personalizado</div>
+          </div>
+        </div>              
+      </div>
+    </div>
+    <div class="columns" v-if="!user_uid">
+      <div class="column">
+       <div class="card">
+          <div class="card-image">
+            <figure class="image is-by">
+              <img src="/img/005.jpg" alt="Placeholder image">
+            </figure>
+            <div class="has-text-centered mt-3 content">Elecciones, Asambleas y Juntas</div>
+          </div>
+        </div>                      
+      </div>
+      <div class="column">
+        <b-image class="image hero is-medium position-relative" src="/img/006.jpg">
+        </b-image>        
+      </div>
+    </div>        
   </div>
 </template>
 
@@ -53,11 +101,11 @@ export default {
     return {      
       searchText: '',
       items: [
-        { text: 'Rápido, fácil e intuitivo', img:'/img/001.jpg', prop: '/img/001-copia.jpg'},
-        { text: 'Desde tu dispositivo móvil', img:'/img/002.jpg', prop: '/img/002-copia.jpg'},
-        { text: 'Votos telemáticos y presenciales', img:'/img/003.jpg', prop: '/img/003-copia.jpg'},
-        { text: 'Voto anónimo o personalizado', img:'/img/004.jpg', prop: '/img/004-copia.jpg', attribution: 'Imagen de <a href="https://pixabay.com/es/users/carmen_carbonell-3615516/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=2816353">Carmen Carbonell</a> en <a href="https://pixabay.com/es/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=2816353">Pixabay</a>' },
-        { text: 'Elecciones, Asambleas y Juntas', img:'/img/005.jpg', prop: '/img/005-copia.jpg', attribution: '<a href="https://www.freepik.com/photos/hand">Hand photo created by wavebreakmedia_micro - www.freepik.com</a>' }
+        { text: 'Rápido, fácil e intuitivo', img:'/img/001.jpg', prop: '/img/001-copia.jpg', color: 'primary' },
+        { text: 'Desde tu dispositivo móvil', img:'/img/002.jpg', prop: '/img/002-copia.jpg', color: 'info'},
+        { text: 'Votos telemáticos y presenciales', img:'/img/003.jpg', prop: '/img/003-copia.jpg', color: 'success'},
+        { text: 'Voto anónimo o personalizado', img:'/img/004.jpg', prop: '/img/004-copia.jpg', attribution: 'Imagen de <a href="https://pixabay.com/es/users/carmen_carbonell-3615516/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=2816353">Carmen Carbonell</a> en <a href="https://pixabay.com/es/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=2816353">Pixabay</a>', color: 'warning'},
+        { text: 'Elecciones, Asambleas y Juntas', img:'/img/005.jpg', prop: '/img/005-copia.jpg', attribution: '<a href="https://www.freepik.com/photos/hand">Hand photo created by wavebreakmedia_micro - www.freepik.com</a>', color: 'danger'}
       ]
     };
   },  
@@ -113,7 +161,8 @@ export default {
 }
 .title-slide {
   color:azure;
-  transform: translateY(-250px);
+  /* transform: translateY(-250px); */
   text-shadow: black 0.1em 0.1em;
+  z-index: 90;
 }
 </style>

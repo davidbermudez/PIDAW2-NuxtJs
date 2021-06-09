@@ -177,6 +177,7 @@ export default {
       .catch((err) => {
         console.log(err);
       }),
+      this.$router.app.refresh(),
       this.$router.push('/')
     },
     logout() {

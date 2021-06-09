@@ -1,23 +1,30 @@
 <template>
   <div class="">
     <section class="section">
-      <h1 class="title">Bienvenido/a {{ user_name }}</h1>
-      <h2 class="subtitle">
-        Participa en las votaciones a las que has sido convocado/a
-      </h2>
+      <h1 class="title">{{ user_name }}</h1>      
     </section>
-    <button @click="refresh">Refresh</button>
+    <section class="section">
+      <b-button type="is-success" @click="refresh">Refresh</b-button>
+    </section>
     <div class="columns is-multiline">        
       <template>
         <section class="section">
-          <h2 class="title">{{ votacion_name }}:</h2>
+          <h2 class="title">{{ current_assembly[0]['label'] }}:</h2>
           <template>
-            <b-table :data="ponencias" :columns="columns" :row-class="(row, index) => row.active === true && 'is-info'"></b-table>
+            <b-table
+              :data="ponencias"
+              :columns="columns"
+              :row-class="(row, index) => row.active === true && 'is-info'"              
+              :@click="(row, index) => row.active === true && 'votar()'"
+            >
+            </b-table>
           </template>          
         </section>
-      </template>
-      <b-button v-if="activaBoton" type="is-primary" @click="votar()">Votar</b-button>
+      </template>            
     </div>
+    <section class="section">
+      <b-button v-if="activaBoton" type="is-primary" @click="votar()">Votar</b-button>
+    </section>
   </div>
 </template>
 
@@ -26,9 +33,8 @@
 export default {
   data() {
     return {
-      activaBoton: false,
-      votacion_name: '',
-      id_asamblea: '',      
+      activaBoton: false,      
+      id_asamblea: '',   
       columns: [        
         {
           field: 'title',
@@ -59,6 +65,9 @@ export default {
     user_name: function () {
       return this.$store.state.user_name;
     },
+    current_assembly: function () {
+      return this.$store.state.current_assembly
+    },
     current_presentation: function () {
       return this.$store.state.current_presentation
     }
@@ -73,9 +82,9 @@ export default {
     .then((res) => {
       if(res.data.result=='10'){        
         store.commit('savePresentation', res.data.ponencias)        
+        store.commit('saveAssembly', res.data.assembly_data)
         return {
-          'ponencias': res.data.ponencias,
-          'votacion_name': res.data.assembly_name
+          'ponencias': res.data.ponencias,          
         }
       }
       if(res.data.result=='0'){
@@ -129,8 +138,8 @@ export default {
 }
 
 tr.is-info {
-  background: #167df0;
-  color: #fff;
+  background: rgb(59, 177, 255);
+  color: #333;
 }
 
 </style>
