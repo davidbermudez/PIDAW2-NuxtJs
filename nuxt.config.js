@@ -38,6 +38,7 @@ export default {
     // https://go.nuxtjs.dev/buefy
     'nuxt-buefy',
     '@nuxtjs/axios',
+    'nuxt-vuex-localstorage',
   ],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

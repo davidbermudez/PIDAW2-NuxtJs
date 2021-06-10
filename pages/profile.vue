@@ -9,7 +9,7 @@
 <script>
 export default {
   fetch ({ store, redirect }) {
-    if (!store.state.user_uid) {
+    if (!store.state.store_user_uid) {
       return redirect('/')
     }
   },

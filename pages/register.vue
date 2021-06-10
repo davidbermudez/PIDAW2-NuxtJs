@@ -46,11 +46,11 @@ export default {
     }
   },
   computed: {
-    user_uid: function () {
-      return this.$store.state.user_uid;
+    store_user_uid: function () {
+      return this.$store.state.store_user_uid;
     },
-    token: function () {
-      return this.$store.state.token;
+    store_token: function () {
+      return this.$store.state.store_token;
     }
   },
   methods: {
@@ -79,7 +79,7 @@ export default {
     }
   },
   fetch ({ store, redirect }) {
-    if (store.state.user_uid) {
+    if (store.state.store_user_uid) {
       return redirect('/index')
     }
   }

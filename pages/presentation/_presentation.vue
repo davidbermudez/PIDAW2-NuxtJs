@@ -1,7 +1,7 @@
 <template>
   <div class="">
     <section class="section">
-      <h1 class="title"><b-icon icon="account" />{{ user_name }}</h1>      
+      <h1 class="title"><b-icon icon="account" />{{ store_user_name }}</h1>      
     </section>
     <section class="section">
       <b-button type="is-success" @click="retour">Volver</b-button>
@@ -44,30 +44,33 @@ export default {
     };
   },  
   computed: {
-    user_uid: function () {
-      return this.$store.state.user_uid;
+    store_user_uid: function () {
+      return this.$store.state.store_user_uid;
     },
-    token: function () {
-      return this.$store.state.token;
+    store_token: function () {
+      return this.$store.state.store_token;
     },
-    user_email: function () {
-      return this.$store.state.user_email;
+    store_user_email: function () {
+      return this.$store.state.store_user_email;
     },
-    user_name: function () {
-      return this.$store.state.user_name;
+    store_user_name: function () {
+      return this.$store.state.store_user_name;
     },
-    current_assembly: function () {
-      return this.$store.state.current_assembly
+    store_current_assembly: function () {
+      return this.$store.state.store_current_assembly
     },
-    current_presentation: function () {
-      return this.$store.state.current_presentation
+    store_current_presentation: function () {
+      return this.$store.state.store_current_presentation
     }
   },
-  asyncData ({ params, store, $axios }) {
+  asyncData ({ params, store, $axios, redirect }) {
+    if(!store.state.store_user_uid){
+      return redirect('/')      
+    }
     const id_ponencia = params.presentation
     return $axios.post('/options/', {
-      'uid': store.state.user_uid,
-      'token': store.state.token,
+      'uid': store.state.store_user_uid,
+      'token': store.state.store_token,
       'presentation': id_ponencia
     })
     .then((res) => {
@@ -87,8 +90,8 @@ export default {
   methods: {
     vote(option) {      
       let emitir_voto = this.$axios.post('/vote/', {
-        'uid': this.$store.state.user_uid,
-        'token': this.$store.state.token,
+        'uid': this.$store.state.store_user_uid,
+        'token': this.$store.state.store_token,
         'vote': option,
         'presentation': this.$route.params.presentation
       })
@@ -103,11 +106,11 @@ export default {
       })
     },
     retour() {
-      this.$router.push('/assembly/' + this.$store.state.current_assembly[0]['id'])
+      this.$router.push('/assembly/' + this.$store.state.store_current_assembly[0]['id'])
     }
   },
   mounted() {
-    this.current_presentation.forEach(element => {
+    this.store_current_presentation.forEach(element => {
       if (element.active==true){
         this.id = element.id
         this.text = element.text

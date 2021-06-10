@@ -11,7 +11,14 @@
           @click="toIndex"          
         >Assembly-voting  <div class="separator"><b-icon icon="chart-box" size="is-medium"/></div>
         </a>
-
+<div v-show="loaded" style="font-size: 0.4em;">
+  {{ $localStorageLoaded }}
+  {{ $sessionStorageLoaded }}
+  {{ $store.state.localStorage.localStorage_token }}
+  {{ $store.state.sessionStorage.sessionStorage_token }}
+  {{ $store.state.localStorage.localStorage_user_uid }}
+  {{ $store.state.sessionStorage.sessionStorage_user_uid }}
+</div>
         <div class="navbar-burger" @click="isActive = !isActive">
           <span />
           <span />
@@ -20,7 +27,7 @@
       </div>
 
       <div class="navbar-menu" :class="{ active: isActive }">
-        <div class="navbar-end" v-if="!user_uid">
+        <div class="navbar-end" v-if="!store_user_uid">
           <div class="navbar-item">
             <div class="buttons">
               <NuxtLink class="button" to="/register">
@@ -32,7 +39,7 @@
             </div>
           </div>
         </div>
-        <div class="navbar-end" v-if="user_uid">
+        <div class="navbar-end" v-if="store_user_uid">
           <div class="navbar-item">
             <div class="buttons">
               <a class="button" @click="logout">
@@ -124,7 +131,7 @@ export default {
         {
           title: 'Tus votaciones',
           icon: 'home',
-          to: { name: 'index' }
+          to: { name: 'dashboard' }
         },
         {
           title: 'Perfil',
@@ -135,17 +142,20 @@ export default {
     }
   },
   computed: {
-    user_uid: function () {
-      return this.$store.state.user_uid;
+    store_user_uid: function () {
+      return this.$store.state.store_user_uid;
     },
-    token: function () {
-      return this.$store.state.token;
+    store_token: function () {
+      return this.$store.state.store_token;
     },
-    user_email: function () {
-      return this.$store.state.user_email;
+    store_user_email: function () {
+      return this.$store.state.store_user_email;
     },
-    user_name: function () {
-      return this.$store.state.user_name;
+    store_user_name: function () {
+      return this.$store.state.store_user_name;
+    },
+    loaded() {
+      return this.$store.state.localStorage.status && this.$store.state.sessionStorage.status
     }
   },
   methods: {
@@ -157,14 +167,22 @@ export default {
       .then((res) => {
         if (res.data.result=='10'){
           console.log(res.data.message)
-          this.$store.commit('saveToken', res.data.token)
-          this.$store.commit('saveUser', res.data.uid)
+          this.$store.commit('store_saveToken', res.data.token)
+          this.$store.commit('store_saveUser', res.data.uid)
           this.getUser(res.data.token, res.data.uid)
           // restore input field
           this.loginEmail = ''
           this.loginPassword = ''
           // hide modal
           this.isLoginActive = false
+          // save locaStorage & Cookie
+          this.$store.commit('localStorage/localStorage_saveToken', res.data.token)
+          this.$store.commit('localStorage/localStorage_saveUser', res.data.uid)
+          this.$store.commit('sessionStorage/sessionStorage_saveToken', res.data.token)
+          this.$store.commit('sessionStorage/sessionStorage_saveUser', res.data.uid)
+
+          this.$router.app.refresh()
+          this.$router.push('/dashboard')
         }
         if (res.data.result=='0'){
           const error = (res.data.error)          
@@ -176,13 +194,21 @@ export default {
       })
       .catch((err) => {
         console.log(err);
-      }),
-      this.$router.app.refresh(),
-      this.$router.push('/')
+      })
     },
     logout() {
-      this.$store.commit('saveToken', null)
-      this.$store.commit('saveUser', null)
+      this.$store.commit('store_saveToken', null)
+      this.$store.commit('store_saveUser', null)
+      this.$store.commit('store_saveName', null)
+      this.$store.commit('store_saveEmail', null)
+      this.$store.commit('store_saveAssembly', null)
+      this.$store.commit('store_savePresentation', null)
+      //locaStorage
+      this.$store.commit('localStorage/localStorage_saveToken', null)
+      this.$store.commit('localStorage/localStorage_saveUser', null)
+      //Cookie
+      this.$store.commit('sessionStorage/sessionStorage_saveToken', null)
+      this.$store.commit('sessionStorage/sessionStorage_saveUser', null)
       this.$router.push('/')
     },
     register() {
@@ -197,11 +223,11 @@ export default {
       })
       .then((res) => {
         if(res.data.result=='10'){
-          this.$store.commit('saveName', res.data.user_name)          
-          this.$store.commit('saveEmail', res.data.user_email)
+          this.$store.commit('store_saveName', res.data.user_name)          
+          this.$store.commit('store_saveEmail', res.data.user_email)
         }
         if(res.data.result=='0'){
-          alert(error)
+          alert(res.data.error)
         }
       })
       .catch((err) => {
@@ -210,6 +236,28 @@ export default {
     },
     toIndex(){
       this.$router.push('/')
+    },
+  },
+  created() {    
+    let activate = false
+    if (!this.$store.state.store_user_uid) {      
+      if(!this.$store.state.localStorage.localStorage_user_uid){        
+        if(!this.$store.state.sessionStorage.sessionStorage_user_uid){          
+        } else {
+          this.$store.commit('store_saveToken', this.$store.state.sessionStorage.sessionStorage_token)
+          this.$store.commit('store_saveUser', this.$store.state.sessionStorage.sessionStorage_user_uid)
+          activate = true
+        }
+      } else {
+        this.$store.commit('store_saveToken', this.$store.state.localStorage.localStorage_token)
+        this.$store.commit('store_saveUser', this.$store.state.localStorage.localStorage_user_uid)
+        activate = true
+      }
+      if (activate){
+        this.getUser(this.$store.state.store_token, this.$store.state.store_user_uid)
+      }
+    } else {
+      this.getUser(this.$store.state.store_token, this.$store.state.store_user_uid)
     }
   }
 }

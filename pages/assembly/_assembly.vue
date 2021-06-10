@@ -1,7 +1,7 @@
 <template>
   <div class="">
     <section class="section">
-      <h1 class="title">{{ user_name }}</h1>      
+      <h1 class="title">{{ store_user_name }}</h1>
     </section>
     <section class="section">
       <b-button type="is-success" @click="refresh">Refresh</b-button>
@@ -9,7 +9,7 @@
     <div class="columns is-multiline">        
       <template>
         <section class="section">
-          <h2 class="title">{{ current_assembly[0]['label'] }}:</h2>
+          <h2 class="title">{{ store_current_assembly[0]['label'] }}:</h2>
           <template>
             <b-table
               :data="ponencias"
@@ -53,42 +53,46 @@ export default {
     };
   },  
   computed: {
-    user_uid: function () {
-      return this.$store.state.user_uid;
+    store_user_uid: function () {
+      return this.$store.state.store_user_uid;
     },
-    token: function () {
-      return this.$store.state.token;
+    store_token: function () {
+      return this.$store.state.store_token;
     },
-    user_email: function () {
-      return this.$store.state.user_email;
+    store_user_email: function () {
+      return this.$store.state.store_user_email;
     },
-    user_name: function () {
-      return this.$store.state.user_name;
+    store_user_name: function () {
+      return this.$store.state.store_user_name;
     },
-    current_assembly: function () {
-      return this.$store.state.current_assembly
+    store_current_assembly: function () {
+      return this.$store.state.store_current_assembly
     },
-    current_presentation: function () {
-      return this.$store.state.current_presentation
+    store_current_presentation: function () {
+      return this.$store.state.store_current_presentation
     }
   },
-  asyncData ({ params, store, $axios }) {
+  asyncData ({ params, store, $axios, redirect }) {
+    if(!store.state.store_user_uid){
+      return redirect('/')      
+    }
     const id_asamblea = params.assembly
     return $axios.post('/presentations/', {
-      'uid': store.state.user_uid,
-      'token': store.state.token,
+      'uid': store.state.store_user_uid,
+      'token': store.state.store_token,
       'assembly': id_asamblea
     })
     .then((res) => {
       if(res.data.result=='10'){        
-        store.commit('savePresentation', res.data.ponencias)        
-        store.commit('saveAssembly', res.data.assembly_data)
+        store.commit('store_savePresentation', res.data.ponencias)        
+        store.commit('store_saveAssembly', res.data.assembly_data)
         return {
           'ponencias': res.data.ponencias,          
         }
       }
       if(res.data.result=='0'){
-        alert(error)
+        alert(res.data.error)
+        this.$router.push('/dashboard')
       }
     })
     .catch((err) => {
@@ -102,7 +106,7 @@ export default {
     },
     activateButton() {
       this.activaBoton = false
-      this.current_presentation.forEach(element => {
+      this.store_current_presentation.forEach(element => {
         if (element.active==true){
           this.activaBoton = true;
         }
@@ -110,7 +114,7 @@ export default {
     },
     votar() {
       if(this.activaBoton == true){
-        this.current_presentation.forEach(element => {
+        this.store_current_presentation.forEach(element => {
           if (element.active==true){
             this.$router.push('/presentation/' + element.id)
           } 
@@ -120,6 +124,9 @@ export default {
   },
   mounted() {
     this.activateButton()
+  },
+  fetch() {
+    
   }
 }
 </script>

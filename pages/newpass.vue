@@ -57,11 +57,11 @@ export default {
     }
   },
   computed: {
-    user_uid: function () {
-      return this.$store.state.user_uid;
+    store_user_uid: function () {
+      return this.$store.state.store_user_uid;
     },
-    token: function () {
-      return this.$store.state.token;
+    store_token: function () {
+      return this.$store.state.store_token;
     }
   },
   methods: {
@@ -69,8 +69,8 @@ export default {
       if (this.newPass1==this.newPass2) {
         return this.$axios.post('newpass/', {
           'new_pass': this.newPass1,          
-          'uid': this.$store.state.user_uid,
-          'token': this.$store.state.token
+          'uid': this.$store.state.store_user_uid,
+          'token': this.$store.state.store_token
         })
         .then((res) => {
           if (res.data.result=='10'){

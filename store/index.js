@@ -1,29 +1,29 @@
 export const state = () => ({
-  token: null,
-  user_uid: null,
-  user_name: null,
-  user_email: null,
-  current_assembly: null,
-  current_presentation: null,
+  store_token: null,
+  store_user_uid: null,
+  store_user_name: null,
+  store_user_email: null,
+  store_current_assembly: null,
+  store_current_presentation: null,
 })
 
 export const mutations = {
-  saveUser(state, user_uid){
-    state.user_uid = user_uid;
+  store_saveUser(state, store_user_uid){
+    state.store_user_uid = store_user_uid;
   },
-  saveToken(state, token){
-    state.token = token;
+  store_saveToken(state, store_token){
+    state.store_token = store_token;
   },
-  saveName(state, user_name){
-    state.user_name = user_name;
+  store_saveName(state, store_user_name){
+    state.store_user_name = store_user_name;
   },
-  saveEmail(state, user_email){
-    state.user_email = user_email;
+  store_saveEmail(state, store_user_email){
+    state.store_user_email = store_user_email;
   },
-  saveAssembly(state, current_assembly){
-    state.current_assembly = current_assembly;
+  store_saveAssembly(state, store_current_assembly){
+    state.store_current_assembly = store_current_assembly;
   },
-  savePresentation(state, current_presentation){
-    state.current_presentation = current_presentation;
+  store_savePresentation(state, store_current_presentation){
+    state.store_current_presentation = store_current_presentation;
   }
 }
