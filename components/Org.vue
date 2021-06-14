@@ -16,19 +16,7 @@
        <a class="is-light card-footer-item">
          <span>{{ asamblea.assembly_label }}</span>         
        </a>
-     </footer>
-     <!-- modal -->
-     <b-modal :active.sync="isModalActive">
-      <div class="card">
-        <div class="card-content">
-          <h2 class="title">
-            {{ asamblea.assembly_label }}
-            <small>({{ asamblea.assembly_id }})</small>
-          </h2>
-          <p>{{asamblea.assembly_label}}</p>
-        </div>
-      </div>
-      </b-modal>
+     </footer>     
    </div>
  </div>
 </template>

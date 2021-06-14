@@ -11,14 +11,6 @@
           @click="toIndex"          
         >Assembly-voting  <div class="separator"><b-icon icon="chart-box" size="is-medium"/></div>
         </a>
-<div v-show="loaded" style="font-size: 0.4em;">
-  {{ $localStorageLoaded }}
-  {{ $sessionStorageLoaded }}
-  {{ $store.state.localStorage.localStorage_token }}
-  {{ $store.state.sessionStorage.sessionStorage_token }}
-  {{ $store.state.localStorage.localStorage_user_uid }}
-  {{ $store.state.sessionStorage.sessionStorage_user_uid }}
-</div>
         <div class="navbar-burger" @click="isActive = !isActive">
           <span />
           <span />
