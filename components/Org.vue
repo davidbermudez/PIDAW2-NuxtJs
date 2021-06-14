@@ -1,6 +1,6 @@
 <template>
-  <div class="column is-full-mobile is-half-tablet 
-             is-one-third-desktop is-one-quarter-widescreen">
+  <div class="column is-three-quarters-mobile is-two-thirds-tablet is-half-desktop is-one-third-widescreen is-one-quarter-fullhd"> 
+    <!-- column is-full-mobile is-half-tablet is-one-third-desktop is-one-quarter-widescreen -->
    <div class="card">
      <header class="card-header">
        <p class="card-header-title">{{ asamblea.organization_name }}</p>
@@ -12,7 +12,7 @@
        </figure>
        
      </div>
-     <footer class="card-footer" style="max-width:200px">
+     <footer class="card-footer" style="max-width:250px">
        <a class="is-light card-footer-item">
          <span>{{ asamblea.assembly_label }}</span>         
        </a>
