@@ -46,6 +46,6 @@ export default {
   },
 
   axios: {
-    baseURL: "https://localhost:8000/api/"
+    baseURL: "https://assembly-voting.tk/api/"
   },
 }

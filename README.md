@@ -1,4 +1,4 @@
-# cli_peliculas
+# pidwa2-nuxt
 
 ## Build Setup
 
