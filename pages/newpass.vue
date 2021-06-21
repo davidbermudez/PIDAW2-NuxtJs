@@ -95,8 +95,48 @@ export default {
       } else {
         alert("Las contraseñas no coinciden")
       }
+    },
+    getUser(token, uid){
+      const peticion1 = this.$axios.post('/voter/', {
+        'uid': uid,
+        'token': token
+      })
+      .then((res) => {
+        if(res.data.result=='10'){
+          this.$store.commit('store_saveName', res.data.user_name)          
+          this.$store.commit('store_saveEmail', res.data.user_email)
+        }
+        if(res.data.result=='0'){
+          alert(res.data.error)
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    },
+  },
+  created() {    
+    let activate = false
+    if (!this.$store.state.store_user_uid) {      
+      if(!this.$store.state.localStorage.localStorage_user_uid){        
+        if(!this.$store.state.sessionStorage.sessionStorage_user_uid){          
+        } else {
+          this.$store.commit('store_saveToken', this.$store.state.sessionStorage.sessionStorage_token)
+          this.$store.commit('store_saveUser', this.$store.state.sessionStorage.sessionStorage_user_uid)
+          activate = true
+        }
+      } else {
+        this.$store.commit('store_saveToken', this.$store.state.localStorage.localStorage_token)
+        this.$store.commit('store_saveUser', this.$store.state.localStorage.localStorage_user_uid)
+        activate = true
+      }
+      if (activate){
+        this.getUser(this.$store.state.store_token, this.$store.state.store_user_uid)
+      }
+    } else {
+      this.getUser(this.$store.state.store_token, this.$store.state.store_user_uid)
     }
-  }  
+  }
 }
 </script>
 

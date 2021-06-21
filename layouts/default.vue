@@ -232,7 +232,7 @@ export default {
   },
   created() {    
     let activate = false
-    if (!this.$store.state.store_user_uid) {      
+    if (!this.$store.state.store_user_uid) {
       if(!this.$store.state.localStorage.localStorage_user_uid){        
         if(!this.$store.state.sessionStorage.sessionStorage_user_uid){          
         } else {
