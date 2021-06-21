@@ -50,7 +50,7 @@
 
 <script>
 export default {
-  date() {
+  data() {
     return {
       newPass1: '',
       newPass2: '',
