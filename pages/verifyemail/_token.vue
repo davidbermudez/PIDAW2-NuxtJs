@@ -21,7 +21,7 @@ export default {
       if (res.data.result=='10'){
         store.commit('store_saveToken', res.data.token)
         store.commit('store_saveUser', res.data.uid)
-	// save locaStorage & Cookie
+        // save locaStorage & Cookie
         store.commit('localStorage/localStorage_saveToken', res.data.token)
         store.commit('localStorage/localStorage_saveUser', res.data.uid)
         store.commit('sessionStorage/sessionStorage_saveToken', res.data.token)
