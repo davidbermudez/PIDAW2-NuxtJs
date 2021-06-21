@@ -62,6 +62,15 @@ export default {
     },
     store_token: function () {
       return this.$store.state.store_token;
+    },
+    store_user_email: function () {
+      return this.$store.state.store_user_email;
+    },
+    store_user_name: function () {
+      return this.$store.state.store_user_name;
+    },
+    loaded() {
+      return this.$store.state.localStorage.status && this.$store.state.sessionStorage.status
     }
   },
   methods: {
